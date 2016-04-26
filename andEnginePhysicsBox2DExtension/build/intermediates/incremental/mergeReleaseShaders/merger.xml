@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/ernesto/Dropbox/Universidad/4to Curso/PLD/Prácticas/MiniCars/andEnginePhysicsBox2DExtension/src/main/shaders"/></dataSet><dataSet config="release"><source path="/Users/ernesto/Dropbox/Universidad/4to Curso/PLD/Prácticas/MiniCars/andEnginePhysicsBox2DExtension/src/release/shaders"/></dataSet></merger>
