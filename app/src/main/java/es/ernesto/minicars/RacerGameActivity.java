@@ -1,9 +1,12 @@
 package es.ernesto.minicars;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl.IAnalogOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
@@ -12,19 +15,26 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.TiledSprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.util.FPSCounter;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.extension.physics.box2d.util.Vector2Pool;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObject;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.color.Color;
 import org.andengine.util.math.MathUtils;
 
 import android.opengl.GLES20;
@@ -35,11 +45,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 /**
- * (c) 2010 Nicolas Gramlich
- * (c) 2011 Zynga
+ * (c) 2016 Ernesto Serrano
  *
- * @author Nicolas Gramlich
- * @since 22:43:20 - 15.07.2010
+ * @author Ernesto Serrano
  */
 public class RacerGameActivity extends SimpleBaseGameActivity {
 	// ===========================================================
@@ -151,14 +159,18 @@ public class RacerGameActivity extends SimpleBaseGameActivity {
 	@Override
 	public void onGameCreated() {
 
+
+		this.mCarIA.setPosition(0,0);
+
 	}
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	private void initOnScreenControls() {
-		final AnalogOnScreenControl analogOnScreenControl = new AnalogOnScreenControl(0, CAMERA_HEIGHT - this.mOnScreenControlBaseTextureRegion.getHeight(), this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.01f, this.getVertexBufferObjectManager(), new IAnalogOnScreenControlListener() {
+	private void initOnScreenControls()
+	{
+		final AnalogOnScreenControl analogOnScreenControl = new AnalogOnScreenControl(0, (CAMERA_HEIGHT - this.mOnScreenControlBaseTextureRegion.getHeight()), this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.01f, this.getVertexBufferObjectManager(), new IAnalogOnScreenControlListener() {
 			@Override
 			public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
 				final Body carBody = RacerGameActivity.this.mCarBody;
@@ -176,17 +188,92 @@ public class RacerGameActivity extends SimpleBaseGameActivity {
 
 			@Override
 			public void onControlClick(final AnalogOnScreenControl pAnalogOnScreenControl) {
-				/* Nothing. */
+
+				// Agregamos un obstaculo donde esté el coche
+				addObstacle(mCar.getX(), mCar.getY());
+
 			}
 		});
 		analogOnScreenControl.getControlBase().setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		analogOnScreenControl.getControlBase().setAlpha(0.5f);
-		//		analogOnScreenControl.getControlBase().setScaleCenter(0, 128);
-		//		analogOnScreenControl.getControlBase().setScale(0.75f);
-		//		analogOnScreenControl.getControlKnob().setScale(0.75f);
+				analogOnScreenControl.getControlBase().setScaleCenter(0, 128);
+				analogOnScreenControl.getControlBase().setScale(0.75f);
+				analogOnScreenControl.getControlKnob().setScale(0.75f);
 		analogOnScreenControl.refreshControlKnobPosition();
 
 		this.mScene.setChildScene(analogOnScreenControl);
+
+
+
+		HUD yourHud = new HUD();
+
+		final Rectangle left = new Rectangle(20, 200, 60, 60,getVertexBufferObjectManager())
+		{
+			public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
+			{
+				if (touchEvent.isActionUp())
+				{
+					// move player left
+				}
+				return true;
+			};
+		};
+
+		final Rectangle right = new Rectangle(100, 200, 60, 60 ,getVertexBufferObjectManager())
+		{
+			public boolean onAreaTouched(TouchEvent touchEvent, float X, float Y)
+			{
+				if (touchEvent.isActionUp())
+				{
+					// move player right
+				}
+				return true;
+			};
+		};
+
+		yourHud.registerTouchArea(left);
+		yourHud.registerTouchArea(right);
+		yourHud.attachChild(left);
+		yourHud.attachChild(right);
+
+		this.mCamera.setHUD(yourHud);
+
+
+
+		final FPSCounter fpsCounter = new FPSCounter();
+		this.mEngine.registerUpdateHandler(fpsCounter);
+
+		Font mFont;
+		BitmapTextureAtlas fontTextureAtlas;// = new BitmapTextureAtlas(1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+        FontFactory.setAssetBasePath("font/");
+
+		mFont = FontFactory.createFromAsset(mEngine.getFontManager(),
+				mEngine.getTextureManager(), 256, 256, TextureOptions.BILINEAR,
+				getAssets(), "Droid.ttf", 32f, true,
+				Color.YELLOW_ARGB_PACKED_INT);
+		mFont.load();
+
+		final Text mText = new Text(25, 25, mFont, "Some Text",getVertexBufferObjectManager());
+
+		final Text fpsText = new Text(250, 240, mFont, "FPS:", "FPS: XXXXX".length(),getVertexBufferObjectManager());
+
+		this.mScene.attachChild(fpsText);
+        this.mScene.attachChild(mText);
+
+		this.mScene.registerUpdateHandler(new TimerHandler(1 / 20.0f, true, new ITimerCallback()
+		{
+			@Override
+			public void onTimePassed(final TimerHandler pTimerHandler)
+			{
+				//fpsText.setText("FPS: " + fpsCounter.getFPS());
+                //System.out.println("hola");
+                mText.setText(String.valueOf(mCar.getX()));
+                mCarIA.setPosition(mCarIA.getX()+1,mCarIA.getY());
+			}
+		}));
+
+
 	}
 
 	private void initCar() {
@@ -203,16 +290,16 @@ public class RacerGameActivity extends SimpleBaseGameActivity {
 
 	private void initCar2() {
 
-//
-//		this.mCarIA = new TiledSprite(20, 20, CAR_SIZE, CAR_SIZE, this.mVehiclesTextureRegion, this.getVertexBufferObjectManager());
-//		this.mCarIA.setCurrentTileIndex(0);
-//
-//		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-//		this.mCarBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, this.mCarIA, BodyType.DynamicBody, carFixtureDef);
-//
-//		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(this.mCarIA, this.mCarBodyIA, true, false));
-//
-//		this.mScene.attachChild(this.mCarIA);
+
+		this.mCarIA = new TiledSprite(20, 20, CAR_SIZE, CAR_SIZE, this.mVehiclesTextureRegion, this.getVertexBufferObjectManager());
+		this.mCarIA.setCurrentTileIndex(0);
+
+		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
+		this.mCarBodyIA = PhysicsFactory.createBoxBody(this.mPhysicsWorld, this.mCarIA, BodyType.DynamicBody, carFixtureDef);
+
+		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(this.mCarIA, this.mCarBodyIA, true, false));
+
+		this.mScene.attachChild(this.mCarIA);
 	}
 
 
