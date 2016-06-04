@@ -415,11 +415,11 @@ public class GamePlayActivity extends PreloaderActivity implements
 								getVertexBufferObjectManager())));
 		autoParallaxBackground.setPaused(true);
 		scene.setBackground(autoParallaxBackground);
-		// create physics
+		// inicializa el motor de fisica box2d
 		mPhysicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false,
 				8, 1);
 		scene.registerUpdateHandler(this.mPhysicsWorld);
-		// init player's parameters
+		// establece la posicion inicial del jugador
 		final int playerX = (CAMERA_WIDTH - (int) this.mPlayerTexture
 				.getWidth()) / 2 - 45;
 		final int playerY = CAMERA_HEIGHT
@@ -433,13 +433,13 @@ public class GamePlayActivity extends PreloaderActivity implements
 		mCarBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, car,
 				BodyType.DynamicBody, carFixtureDef);
 		mCarBody.setBullet(false);
-		// init enemies parameters
+		// inicializa el enemigo
 		mEnemy = new Enemy(scene, mPhysicsWorld, mParallaxLayerRoad.getWidth(),
 				(float) getSpeed(), this.mEnemyTexture,
 				getVertexBufferObjectManager());
 		mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(car,
 				mCarBody, true, false));
-		// listener for contact between cars
+		// manejador del evento cuando se chocan los coches
 		mPhysicsWorld.setContactListener(new ContactListener() {
 			@Override
 			public void beginContact(final Contact pContact) {
@@ -475,33 +475,34 @@ public class GamePlayActivity extends PreloaderActivity implements
 			}
 		});
 
-		// speedometer work
+		// velocimetro
 		speedTable = getSprite(scene, CAMERA_WIDTH - 190, CAMERA_HEIGHT - 250,
 				this.mSpeedTableTexture, 0.7f);
 		speedArrow = getSprite(scene, CAMERA_WIDTH - 192, CAMERA_HEIGHT - 250,
 				this.mSpeedArrowTexture, 0.7f);
 		speedArrow.setRotation(-50);
 		speedArrow.setRotationCenter(127, 89);
-		// fuel-meter work
+		// deposito
 		fuelTable = getSprite(scene, -115, CAMERA_HEIGHT - 305,
 				this.mFuelTableTexture, 0.35f);
 		fuelArrow = getSprite(scene, -79, CAMERA_HEIGHT - 280,
 				this.mFuelArrowTexture, 0.35f);
 		fuelArrow.setRotationCenterX(fuelArrow.getRotationCenterX() - 6);
-		// distance indicator
+		// mapa
 		distanceTable = getSprite(scene, -60, CAMERA_HEIGHT / 2 - 450,
 				this.mDistanceTableTexture, 0.8f);
 		distanceArrow = getSprite(scene, 15, CAMERA_HEIGHT / 2 + 117,
 				this.mDistanceArrowTexture, 0.6f);
 		startPoint = (int) distanceArrow.getY();
-		// create bouns icon
+		// bonus (combustible)
 		fuelBonus = new Bonus(scene, mParallaxLayerRoad.getWidth(),
 				this.fuelBonusTexture, getVertexBufferObjectManager());
-                //create dialog form
+		// formulario de fin de carrera
 		form = new Rectangle(0, CAMERA_HEIGHT / 2 - 25, CAMERA_WIDTH,
 				CAMERA_HEIGHT / 10, getVertexBufferObjectManager());
 		form.setColor(0.05f, 0.05f, 0.05f, 0.7f);
 		scene.attachChild(form);
+
 		dialogText = new Text(140, CAMERA_HEIGHT / 2-50, this.mFont,
 					"Pulse para acelerar", 150, this.getVertexBufferObjectManager());
 		scene.attachChild(dialogText);

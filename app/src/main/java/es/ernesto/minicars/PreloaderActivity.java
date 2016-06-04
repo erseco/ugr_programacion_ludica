@@ -93,14 +93,10 @@ public abstract class PreloaderActivity extends LayoutGameActivity {
 	}
 
 	/**
-	 * This will be called after all of the asyc assets are loaded. The loader
-	 * will be in charge of changing the scenes.
+	 * Este metodo será llamado despues de cargarse todos los assets al cambiar la escena
 	 */
 	protected abstract Scene onAssetsLoaded();
 
-	/**
-	 * This is called when assets need to be loaded in the background.
-	 */
 	protected abstract void assetsToLoad();
 
 }
