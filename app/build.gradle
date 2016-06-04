@@ -15,8 +15,8 @@ android {
         applicationId 'es.ernesto.minicars'
         minSdkVersion 10
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName '1.0.1'
         signingConfig signingConfigs.config
     }
     buildTypes {
@@ -28,20 +28,12 @@ android {
             renderscriptDebuggable false
         }
         debug {
-            debuggable false
-            jniDebuggable false
-            renderscriptDebuggable false
+            debuggable true
+            jniDebuggable true
+            renderscriptDebuggable true
         }
     }
     productFlavors {
-        flavor {
-            minSdkVersion 10
-            applicationId 'es.ernesto.minicars'
-            signingConfig signingConfigs.config
-            targetSdkVersion 21
-            versionCode 1
-            versionName '1.0'
-        }
     }
 }
 

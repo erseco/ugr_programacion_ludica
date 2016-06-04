@@ -4,13 +4,11 @@
     package="es.ernesto.minicars" >
 
     <application
-        android:debuggable="false"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:exported="false"
-        tools:ignore="HardcodedDebugMode">
+        android:exported="false">
         <activity
             android:name=".MainMenuActivity"
             android:label="@string/app_name"
