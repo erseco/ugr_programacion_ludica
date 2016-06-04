@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="es.ernesto.minicars" >
 
     <application
+        android:debuggable="false"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:exported="false">
+        android:exported="false"
+        tools:ignore="HardcodedDebugMode">
         <activity
-
             android:name=".MainMenuActivity"
             android:label="@string/app_name"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -64,6 +66,15 @@
         </activity>
         <activity
             android:name="es.ernesto.minicars.GamePlayActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.ALTERNATIVE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="es.ernesto.minicars.RacerGameActivity"
             android:configChanges="orientation"
             android:label="@string/app_name" >
             <intent-filter>

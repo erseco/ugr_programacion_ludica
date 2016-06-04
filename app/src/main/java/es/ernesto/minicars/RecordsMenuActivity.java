@@ -88,7 +88,7 @@ public class RecordsMenuActivity extends PreloaderActivity {
 			textScores.setPosition(CAMERA_WIDTH - 150,
 					textRecordsTitle.getY() + 150);
 		}
-		textBack = new Text(CAMERA_WIDTH / 2 - 40, 740, this.mFont, "Back",
+		textBack = new Text(CAMERA_WIDTH / 2 - 40, 740, this.mFont, "Volver",
 					this.getVertexBufferObjectManager());
 		mBackButton = new Sprite((CAMERA_WIDTH / 2)
 				- (mButtonTextureRegion.getWidth() / 2), 720,

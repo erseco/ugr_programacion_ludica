@@ -51,7 +51,7 @@ public abstract class PreloaderActivity extends LayoutGameActivity {
 				1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		loadScreenBGRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(loadScreenBGTexture, this,
-						"gfx/loading/background.png", 0, 0);//
+						"gfx/menu/background.png", 0, 0);//
 		loadScreenBGTexture.load();
 		this.mFontTexture = new BitmapTextureAtlas(this.getTextureManager(),
 				256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -68,7 +68,7 @@ public abstract class PreloaderActivity extends LayoutGameActivity {
 		Sprite bg = new Sprite(0, 0, loadScreenBGRegion,
 				this.getVertexBufferObjectManager());
 		scene.setBackground(new SpriteBackground(bg));
-		final Text textLoading = new Text(65, 200, this.mFont, "Cargando...", this.getVertexBufferObjectManager());
+		final Text textLoading = new Text(45, 200, this.mFont, "Cargando...", this.getVertexBufferObjectManager());
 		scene.attachChild(textLoading);
 		final IAsyncCallback callback = new IAsyncCallback() {
 

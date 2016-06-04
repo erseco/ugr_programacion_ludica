@@ -502,10 +502,10 @@ public class GamePlayActivity extends PreloaderActivity implements
 				CAMERA_HEIGHT / 10, getVertexBufferObjectManager());
 		form.setColor(0.05f, 0.05f, 0.05f, 0.7f);
 		scene.attachChild(form);
-		dialogText = new Text(170, CAMERA_HEIGHT / 2, this.mFont,
-					"Tap to start", 150, this.getVertexBufferObjectManager());
+		dialogText = new Text(140, CAMERA_HEIGHT / 2-50, this.mFont,
+					"Pulse para acelerar", 150, this.getVertexBufferObjectManager());
 		scene.attachChild(dialogText);
-		scoreText = new Text(CAMERA_WIDTH / 2 - 40, 30,
+		scoreText = new Text(CAMERA_WIDTH / 2 - 80, 30,
 					this.mFont, "Score: 0", 30,
 					this.getVertexBufferObjectManager());
 		scoreText.setColor(0.05f, 0.05f, 0.05f, 0.7f);
@@ -656,35 +656,36 @@ public class GamePlayActivity extends PreloaderActivity implements
 		MusicFactory.setAssetBasePath("mfx/");
 		try {
 			offSound = SoundFactory.createSoundFromAsset(
-					this.mEngine.getSoundManager(), this, "freelow.wav");
+					this.mEngine.getSoundManager(), this, "freelow.ogg");
 			offSound.setLooping(true);
-			offSound.setVolume(85);
+			offSound.setVolume(65);
 			onSound = SoundFactory.createSoundFromAsset(
-					this.mEngine.getSoundManager(), this, "onlow.wav");
+					this.mEngine.getSoundManager(), this, "onlow.ogg");
 			onSound.setLooping(true);
-			onSound.setVolume(85);
+			onSound.setVolume(65);
 			stopSound = SoundFactory.createSoundFromAsset(
-					this.mEngine.getSoundManager(), this, "stop.wav");
-			stopSound.setVolume(85);
+					this.mEngine.getSoundManager(), this, "stop.ogg");
+			stopSound.setVolume(65);
 			crashSound = SoundFactory.createSoundFromAsset(
-					this.mEngine.getSoundManager(), this, "strike.wav");
-			crashSound.setVolume(85);
+					this.mEngine.getSoundManager(), this, "strike.ogg");
+			crashSound.setVolume(65);
 			winSound = SoundFactory.createSoundFromAsset(
-					this.mEngine.getSoundManager(), this, "win.wav");
-			winSound.setVolume(85);
+					this.mEngine.getSoundManager(), this, "win.ogg");
+			winSound.setVolume(65);
 			loseSound = SoundFactory.createSoundFromAsset(
-					this.mEngine.getSoundManager(), this, "lose.wav");
-			loseSound.setVolume(85);
+					this.mEngine.getSoundManager(), this, "lose.ogg");
+			loseSound.setVolume(65);
 			bonusSound = SoundFactory.createSoundFromAsset(
-					this.mEngine.getSoundManager(), this, "bonus.wav");
-			bonusSound.setVolume(85);
+					this.mEngine.getSoundManager(), this, "bonus.ogg");
+			bonusSound.setVolume(65);
 			downSound = SoundFactory.createSoundFromAsset(
-					this.mEngine.getSoundManager(), this, "down.wav");
+					this.mEngine.getSoundManager(), this, "down.ogg");
 			downSound.setVolume(500);
 			music = MusicFactory.createMusicFromAsset(getMusicManager(), this,
-					"track" + GameSettings.getCurrentLevel() + ".mp3");
+					"mario.mid");
 			music.setLooping(true);
-			System.out.print("track" + GameSettings.getCurrentLevel() + ".mp3");
+            music.setVolume(100);
+			System.out.print("mario.mid");
 		} catch (final IOException e) {
 			Debug.e(e);
 		}

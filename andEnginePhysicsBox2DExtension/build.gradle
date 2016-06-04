@@ -2,10 +2,9 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.0"
-
+    buildToolsVersion '24.0.0 rc4'
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 10
         targetSdkVersion 21
 
         ndk {
@@ -18,14 +17,17 @@ android {
             // This needs to be done so that gradle does not know about your jni. There are errors otherwise
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable false
         }
     }
-
+    productFlavors {
+    }
 }
 
 dependencies {

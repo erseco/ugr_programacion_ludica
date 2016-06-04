@@ -26,10 +26,10 @@ public class LevelSelectActivity extends BaseGameActivity {
 	private BitmapTextureAtlas mBackground, mButtonTexture;
 	private TextureRegion mBackgroundTextureRegion, mButtonTextureRegion;
 	private Sprite mBackButton, mBG, mLevel1Button, mLevel2Button,
-			mLevel3Button;
+			mLevel3Button, mLevelTestButton;
 	private BitmapTextureAtlas mFontTexture;
 	private Font mFont;
-	Text textBack, textLevel1, textLevel2, textLevel3;
+	Text textBack, textLevel1, textLevel2, textLevel3, textLevelTest;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -149,10 +149,38 @@ public class LevelSelectActivity extends BaseGameActivity {
 			}
 
 		};
-		textBack = new Text(CAMERA_WIDTH / 2 - 40, 390, this.mFont, "Volver",
+
+		textLevelTest = new Text(CAMERA_WIDTH / 2 - 52, 390, this.mFont,
+				"TEST", this.getVertexBufferObjectManager());
+		mLevelTestButton = new Sprite((CAMERA_WIDTH / 2)
+				- (mButtonTextureRegion.getWidth() / 2), 370,
+				mButtonTextureRegion, this.getVertexBufferObjectManager()) {
+			@Override
+			protected void onManagedUpdate(float pSecondsElapsed) {
+
+				super.onManagedUpdate(pSecondsElapsed);
+			}
+
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+										 float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if (pSceneTouchEvent.isActionDown()) {
+
+
+					Intent start = new Intent(LevelSelectActivity.this,
+							RacerGameActivity.class);
+					startActivity(start);
+				}
+				return true;
+			}
+
+		};
+
+
+		textBack = new Text(CAMERA_WIDTH / 2 - 40, 490, this.mFont, "Volver",
 					this.getVertexBufferObjectManager());
 		mBackButton = new Sprite((CAMERA_WIDTH / 2)
-				- (mButtonTextureRegion.getWidth() / 2), 370,
+				- (mButtonTextureRegion.getWidth() / 2), 470,
 				mButtonTextureRegion, this.getVertexBufferObjectManager()) {
 			@Override
 			protected void onManagedUpdate(float pSecondsElapsed) {
@@ -178,13 +206,18 @@ public class LevelSelectActivity extends BaseGameActivity {
 		scene.registerTouchArea(mLevel1Button);
 		scene.registerTouchArea(mLevel2Button);
 		scene.registerTouchArea(mLevel3Button);
+		scene.registerTouchArea(mLevelTestButton);
+
 		scene.registerTouchArea(mBackButton);
 		scene.attachChild(mLevel1Button);
 		scene.attachChild(mLevel2Button);
 		scene.attachChild(mLevel3Button);
+		scene.attachChild(mLevelTestButton);
 		scene.attachChild(textLevel1);
 		scene.attachChild(textLevel2);
 		scene.attachChild(textLevel3);
+		scene.attachChild(textLevelTest);
+
 		scene.attachChild(mBackButton);
 		scene.attachChild(textBack);
 		pOnCreateSceneCallback.onCreateSceneFinished(scene);

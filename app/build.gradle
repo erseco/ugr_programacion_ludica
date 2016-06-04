@@ -1,28 +1,52 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'trivial'
+            keyPassword 'c100c*bve'
+            storeFile file('/Users/ernesto/Dropbox/Trabajo/Keys/keystore.p12')
+            storePassword 'c100c*bve'
+        }
+    }
     compileSdkVersion 21
-    buildToolsVersion "21.1.2"
-
+    buildToolsVersion '24.0.0 rc4'
     defaultConfig {
-        applicationId "com.makeinfo.andenginetemplate"
-        minSdkVersion 15
+        applicationId 'es.ernesto.minicars'
+        minSdkVersion 10
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable false
+        }
+        debug {
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable false
+        }
+    }
+    productFlavors {
+        flavor {
+            minSdkVersion 10
+            applicationId 'es.ernesto.minicars'
+            signingConfig signingConfigs.config
+            targetSdkVersion 21
+            versionCode 1
+            versionName '1.0'
         }
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
     compile project(':andEngine')
     compile project(':andEnginePhysicsBox2DExtension')
-
 }

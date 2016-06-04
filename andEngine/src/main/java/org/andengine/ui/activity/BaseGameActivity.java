@@ -219,9 +219,13 @@ public abstract class BaseGameActivity extends BaseActivity implements IGameInte
 			Debug.d(this.getClass().getSimpleName() + ".onResumeGame" + " @(Thread: '" + Thread.currentThread().getName() + "')");
 		}
 
-		this.mEngine.start();
+		if (this.mEngine == null)
+			this.mGamePaused = true;
+		else {
+			this.mEngine.start();
 
-		this.mGamePaused = false;
+			this.mGamePaused = false;
+		}
 	}
 
 	@Override

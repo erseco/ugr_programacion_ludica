@@ -250,11 +250,11 @@ public class RacerGameActivity extends SimpleBaseGameActivity {
 
 		mFont = FontFactory.createFromAsset(mEngine.getFontManager(),
 				mEngine.getTextureManager(), 256, 256, TextureOptions.BILINEAR,
-				getAssets(), "Droid.ttf", 32f, true,
+				getAssets(), "exc.ttf", 12f, true,
 				Color.YELLOW_ARGB_PACKED_INT);
 		mFont.load();
 
-		final Text mText = new Text(25, 25, mFont, "Some Text",getVertexBufferObjectManager());
+		final Text mText = new Text(25, 25, mFont, "texto",getVertexBufferObjectManager());
 
 		final Text fpsText = new Text(250, 240, mFont, "FPS:", "FPS: XXXXX".length(),getVertexBufferObjectManager());
 
@@ -268,7 +268,7 @@ public class RacerGameActivity extends SimpleBaseGameActivity {
 			{
 				//fpsText.setText("FPS: " + fpsCounter.getFPS());
                 //System.out.println("hola");
-                mText.setText(String.valueOf(mCar.getX()));
+                //mText.setText(String.valueOf(mCar.getX()));
                 mCarIA.setPosition(mCarIA.getX()+1,mCarIA.getY());
 			}
 		}));

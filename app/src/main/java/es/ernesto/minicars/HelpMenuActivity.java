@@ -101,7 +101,7 @@ public class HelpMenuActivity extends PreloaderActivity{
 				1024, TextureOptions.BILINEAR);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		mBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(mBackground, this, "menu/help_eng.png", 0, 0);
+					.createFromAsset(mBackground, this, "menu/help.png", 0, 0);
 		mButtonTexture = new BitmapTextureAtlas(this.getTextureManager(), 512, 256);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		mButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory
